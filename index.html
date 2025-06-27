@@ -3,15 +3,8 @@
 <head>
     <title>VR Architectural Walkthrough with WebXR</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="apple-touch-icon" sizes="180x180" href="./css/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./css/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./css/favicon/favicon-16x16.png">
-    <link rel="manifest" href="./css/favicon/site.webmanifest">
-    <link rel="mask-icon" href="./css/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    <link type="text/css" rel="stylesheet" href="./css/common.css">
-    
+    <link rel="stylesheet" href="./css/common.css">
+
     <style>
         body {
             margin: 0;
@@ -25,29 +18,58 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
-            color: white;
+            background: radial-gradient(circle, #1a1a1a, #000000);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1s ease-out;
+            color: white;
+            transition: opacity 1s ease;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         .spinner {
-            border: 6px solid #444;
-            border-top: 6px solid #00ffff;
+            border: 5px solid #333;
+            border-top: 5px solid #00ffff;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        #enter-btn {
+            background-color: #00ffff;
+            color: black;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        #enter-btn:hover {
+            background-color: #00cccc;
         }
 
         .fade-out {
@@ -58,27 +80,34 @@
 </head>
 <body>
 
-    <!-- Creative loading screen -->
+    <!-- Enhanced loading screen -->
     <div id="loading-screen">
+        <!-- Optional logo image -->
+        <!-- <img src="./assets/logo.png" alt="Logo" class="logo"> -->
         <div class="spinner"></div>
         <h2>Loading Virtual Space...</h2>
+        <button id="enter-btn">Enter Experience</button>
+        <!-- Optional sound effect -->
+        <audio id="enter-sound" src="./audio/enter.mp3" preload="auto"></audio>
     </div>
 
-    <!-- Script loading -->
     <script src="./libs/fas.js"></script>
     <script type="module">
         import { App } from './app.js';
 
-        document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('enter-btn').addEventListener('click', () => {
+            // Optional: play a sound
+            const sound = document.getElementById('enter-sound');
+            if (sound) sound.play();
+
+            // Start app
             const app = new App();
             window.app = app;
 
-            // Hide loading screen after short delay
-            setTimeout(() => {
-                const loadingScreen = document.getElementById('loading-screen');
-                loadingScreen.classList.add('fade-out');
-                setTimeout(() => loadingScreen.style.display = 'none', 1000);
-            }, 1000); // Adjust delay if needed
+            // Fade out loader
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.classList.add('fade-out');
+            setTimeout(() => loadingScreen.style.display = 'none', 1000);
         });
     </script>
 </body>
